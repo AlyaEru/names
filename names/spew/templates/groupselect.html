@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+	<head>
+	<meta http-equiv='content-type' content='text/html; charset=utf-8' />
+	<meta http-equiv='content-language' content='en-us' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Names</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	
+	<!-- Add additional CSS in static file -->
+	{% load static %}
+	<script type='text/javascript' src="{% static 'js/groupselect.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+	<div id='main'>
+		
+		<button class='group-button'>
+			<p class='group-name'>Schwab</p>
+			<p>456 words</p>
+		</button>
+		
+	</div>
+	<div id='sidebar'>
+		
+		<form method="post">
+			<h1>Join Group:</h1>
+			<h2>Group Name:</h2>
+			<input type="text" name="word" id="word" maxlength="100">
+			<h2>Password:</h2>
+			<input type="password" name="word" id="word" maxlength="100">
+			<input type="submit" name="cmd" value="create" class="cmd">
+			<input type="submit" name="cmd" value="join" class="cmd">
+		</form>
+		
+	</div>
+</body>
+</html>
