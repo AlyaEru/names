@@ -15,8 +15,8 @@ tags_list = [
     ('[REP]','[re]')
 ]
 
-def get_random_item(pos):
-    words = Word.objects.filter(partOfSpeech__exact=pos)
+def get_random_item(pos, group):
+    words = Word.objects.filter(partOfSpeech__exact=pos, group__exact=group)
     if len(words) > 0:
         return str(random.choice(words))
     else: return 'NONE ):'
@@ -59,6 +59,8 @@ def get_sentence(request):
     if len(words) > 0:
         sentence = str(random.choice(words))
     else: sentence = "No sentences yet; add one!"
+    groupName = 'Schwab' #request.GET.get('group', None)
+    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
 
     iterations = 7
     while '[' in sentence and iterations > 0:
@@ -68,15 +70,14 @@ def get_sentence(request):
             if tag == '[re]':
                 newItem = last
             elif tag == '[pn]':
-                newItem = pluralize(get_random_item('no'))
-            else: newItem = get_random_item(tag[1:-1]) 
+                newItem = pluralize(get_random_item('no',group))
+            else: newItem = get_random_item(tag[1:-1],group) 
             sentence = sentence.replace(tag, newItem,1)
             #BUG: if already replaced tag has same part of speech, will
             #   replace that tag (doing next round early). could mess up
             #   rep tag or future things. FIX: build newSentence, blank out tags
             #   in sentence when they've been filled in newSentence?
 
-            #BUG: could be crashed by making only sentence be [SEN]. Must have repeat limit.
             last = newItem
             iterations -= 1
     sentence = a_to_an(sentence)
@@ -105,8 +106,11 @@ def new_word(request):
 def delete_word(request):
     word = request.GET.get('word', None)
     pos = request.GET.get('pos', None)
+    groupName = 'Schwab' #request.GET.get('group', None)
+
+    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     dbword = user_to_backend_tags(word)
-    Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword).delete()
+    Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword, group__exact=group).delete()
 
     return JsonResponse({ 'response': word + ' deleted from database'})
 
