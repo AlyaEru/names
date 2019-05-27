@@ -15,26 +15,66 @@
 
 </head>
 <body>
-	<div id='main'>
-		
+	<div id='header'>
+		<a class="group-logo">Names</a>
+	</div>
+	<div id='main' class='group-list'>
+		<h2>My Groups:</h2>
 		<button class='group-button'>
 			<p class='group-name'>Schwab</p>
 			<p>456 words</p>
 		</button>
-		
+		<button class='group-button'>
+			<p class='group-name'>More Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
+		<button class='group-button'>
+			<p class='group-name'>Dumb Schwabs</p>
+			<p>456 words</p>
+		</button>
 	</div>
+	
+	<button id="sidebar-button" onclick="$('#sidebar').toggleClass('open');$(this).toggleClass('open');"></button>
 	<div id='sidebar'>
 		
 		<form method="post">
-			<h1>Join Group:</h1>
 			<h2>Group Name:</h2>
 			<input type="text" name="word" id="word" maxlength="100">
 			<h2>Password:</h2>
 			<input type="password" name="word" id="word" maxlength="100">
-			<input type="submit" name="cmd" value="create" class="cmd">
 			<input type="submit" name="cmd" value="join" class="cmd">
+			<input type="submit" name="cmd" value="create" class="cmd">
 		</form>
 		
 	</div>
+
 </body>
 </html>
