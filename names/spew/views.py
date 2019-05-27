@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from spew.models import Word
+from spew.models import Word, NameGroup
 import random
 import re
 
@@ -59,8 +59,9 @@ def get_sentence(request):
     if len(words) > 0:
         sentence = str(random.choice(words))
     else: sentence = "No sentences yet; add one!"
-    
-    while '[' in sentence:
+
+    iterations = 7
+    while '[' in sentence and iterations > 0:
         tags = re.findall('\[..\]',sentence)
         last = ""
         for tag in tags:
@@ -77,6 +78,7 @@ def get_sentence(request):
 
             #BUG: could be crashed by making only sentence be [SEN]. Must have repeat limit.
             last = newItem
+            iterations -= 1
     sentence = a_to_an(sentence)
     sentence = cap_and_punc(sentence)
     data = { 'sentence': sentence }
@@ -85,13 +87,15 @@ def get_sentence(request):
 def new_word(request):
     word = request.GET.get('word', None)
     pos = request.GET.get('pos', None)
+    groupName = 'Schwab' #request.GET.get('group', None)
+    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     
     if word and pos:
-        if Word.objects.filter(partOfSpeech__exact=pos, word__exact=word).count() == 0:
+        if Word.objects.filter(partOfSpeech__exact=pos, word__exact=word, group__name__exact=groupName).count() == 0:
             if word[-1] == '?' and pos == 'se':
                 pos = 's?'
             dbword = user_to_backend_tags(word)
-            w = Word(word=dbword, partOfSpeech=pos)
+            w = Word(word=dbword, partOfSpeech=pos, group=group)
             w.save()
         else:
             return JsonResponse({ 'response': backend_to_user_tags(word) + ' already exists'})
