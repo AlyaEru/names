@@ -10,9 +10,6 @@ $(document).ready(function() {
 		{
 			$.ajax({
 				url: '/spew/generate',
-				/*data: {
-				  'um': 'not needed?'
-				},*/
 				dataType: 'json',
 				success: function (data) {
 					$('h1').after('<li class="spewing" style="color: rgb('+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +');">'+ data.sentence +'</li>');

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from spew.models import Word, NameGroup
 import random
@@ -55,12 +55,14 @@ def cap_and_punc(sentence):
     return sentence[0].upper() + sentence[1:] + ('.' if sentence[-1] != '?' else '')
 
 def get_sentence(request):
-    words = Word.objects.filter(partOfSpeech__exact='se') | Word.objects.filter(partOfSpeech__exact='s?')
+    groupName = request.session['group']
+    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
+    
+    words = Word.objects.filter(partOfSpeech__exact='se', group__exact=group) | Word.objects.filter(partOfSpeech__exact='s?', group__exact=group)
     if len(words) > 0:
         sentence = str(random.choice(words))
     else: sentence = "No sentences yet; add one!"
-    groupName = 'Schwab' #request.GET.get('group', None)
-    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
+    
 
     iterations = 7
     while '[' in sentence and iterations > 0:
@@ -88,7 +90,7 @@ def get_sentence(request):
 def new_word(request):
     word = request.GET.get('word', None)
     pos = request.GET.get('pos', None)
-    groupName = 'Schwab' #request.GET.get('group', None)
+    groupName = request.session['group']
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     
     if word and pos:
@@ -106,7 +108,7 @@ def new_word(request):
 def delete_word(request):
     word = request.GET.get('word', None)
     pos = request.GET.get('pos', None)
-    groupName = 'Schwab' #request.GET.get('group', None)
+    groupName = request.session['group']
 
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     dbword = user_to_backend_tags(word)
@@ -116,7 +118,59 @@ def delete_word(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    if 'group' in request.session.keys():
+        return render(request, 'index.html', {'group': request.session['group']})
+    else: return redirect('./groups')
+
+def join_group(request):
+    name = request.GET.get('name', None)
+    pwd = request.GET.get('pwd', None)
+
+    group = NameGroup.objects.filter(name__exact=name)
+    
+    if len(group) == 1:
+        group = group[0]
+        #check password
+        if group.password != pwd:
+            #error message, password is incorrect
+            return JsonResponse({'success': -1, 'message': 'wrong password'})
+        #navigate to page, give group info
+        request.session['group'] = name
+        return JsonResponse({'success': 0, 'group': name})
+    else:
+        #error message, group does not exist
+        return JsonResponse({'success': -1, 'message': 'group does not exist'})
+    
+    return JsonResponse({'success': 0, 'message': name + ' ' + pwd})
+
+def create_group_setup(request):
+    name = request.GET.get('name', None)
+    pwd = request.GET.get('pwd', None)
+
+    group = NameGroup.objects.filter(name__exact=name)
+    
+    if len(group) == 0:
+        return JsonResponse({'success': 0, 'message': 'success'})
+    else:
+        #if there is one already, can't add another
+        return JsonResponse({'success': -1, 'message': 'a group with this name already exists'})
+
+def create_group(request):
+    name = request.GET.get('name', None)
+    pwd = request.GET.get('pwd', None)
+
+    group = NameGroup.objects.filter(name__exact=name)
+
+    if len(group) == 0:
+        g = NameGroup(name=name, password=pwd)
+        g.save()
+        request.session['group'] = name
+        return JsonResponse({'success': 0, 'message': 'success'})
+    else:
+        #if there is one already, can't add another
+        return JsonResponse({'success': -1, 'message': 'a group with this name already exists'})
+
+    
 
 def groupselect(request):
     return render(request, 'groupselect.html')

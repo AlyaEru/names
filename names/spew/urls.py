@@ -7,4 +7,7 @@ urlpatterns = [
     path('generate', views.get_sentence, name='generate'),
     path('newword', views.new_word, name='newword'),
     path('deleteword', views.delete_word, name='deleteword'),
+    path('joingroup', views.join_group, name='joingroup'),
+    path('creategroupsetup', views.create_group_setup, name='creategroupsetup'),
+    path('creategroup', views.create_group, name='creategroup'),
 ]
