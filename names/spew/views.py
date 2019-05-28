@@ -122,6 +122,13 @@ def index(request):
         return render(request, 'index.html', {'group': request.session['group']})
     else: return redirect('./groups')
 
+def enter_group_data(request, groupname):
+    request.session['group'] = groupname
+    if 'joined' in request.session.keys():
+        request.session['joined'].append(groupname)
+        request.session['joined'] = list(set(request.session['joined']))
+    else: request.session['joined'] = [groupname]
+
 def join_group(request):
     name = request.GET.get('name', None)
     pwd = request.GET.get('pwd', None)
@@ -135,7 +142,7 @@ def join_group(request):
             #error message, password is incorrect
             return JsonResponse({'success': -1, 'message': 'wrong password'})
         #navigate to page, give group info
-        request.session['group'] = name
+        enter_group_data(request, name)
         return JsonResponse({'success': 0, 'group': name})
     else:
         #error message, group does not exist
@@ -164,14 +171,21 @@ def create_group(request):
     if len(group) == 0:
         g = NameGroup(name=name, password=pwd)
         g.save()
-        request.session['group'] = name
+        enter_group_data(request, name)
         return JsonResponse({'success': 0, 'message': 'success'})
     else:
         #if there is one already, can't add another
         return JsonResponse({'success': -1, 'message': 'a group with this name already exists'})
 
+def get_joined_group_data(request):
+    data = []
+    if 'joined' in request.session.keys():
+        for groupname in request.session['joined']:
+            group = NameGroup.objects.filter(name__exact=groupname)[0]
+            wordcount = Word.objects.filter(group__exact=group).count()
+            data = data + [{'name': groupname, 'wordcount': wordcount, 'password': str(group.password)}] 
+    return JsonResponse({'data':data}) 
     
-
 def groupselect(request):
     return render(request, 'groupselect.html')
 

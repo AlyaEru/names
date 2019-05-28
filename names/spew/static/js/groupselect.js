@@ -1,5 +1,40 @@
 $(document).ready(function() {
-	
+	$.ajax({
+		url: '/spew/getjoinedgroupdata',
+		dataType: 'json',
+		success: function (data) {
+			data['data'].forEach(function(item, index) { 
+				$('.group-list').append(
+				"<button class='group-button'>" +
+					"<p class='group-name'>" + item['name'] + "</p>" +
+					"<p>" + item['wordcount'] + " words</p>" +
+				"</button>")
+			});
+			$('.group-list').on('click', '.group-button', function () {
+				
+				name = $(this).find('.group-name').text()
+				pwd = ''
+				data['data'].forEach(function(item, index) {
+					if(item['name'] == name)
+						pwd = item['password']
+				});
+				$.ajax({
+					url: '/spew/joingroup',
+					dataType: 'json',
+					data: {
+						'name': name,
+						'pwd': pwd
+					},
+					success: function (data) {
+						console.log(data)
+						if (data.success == 0) {
+							window.location = window.location.origin + "/spew"
+						}
+					}
+				});
+			});
+		}
+	});
 	
 	$('input#join').click( function () {
 		$('form').submit( function(e) {
@@ -17,10 +52,7 @@ $(document).ready(function() {
 			},
 			dataType: 'json',
 			success: function (data) {
-				console.log(data)
 				if (data.success == 0) {
-					console.log(window.location)
-					console.log(window.location.origin)
 					window.location = window.location.origin + "/spew"
 				}
 				else {
@@ -84,10 +116,7 @@ $(document).ready(function() {
 				},
 				dataType: 'json',
 				success: function (data) {
-					console.log(data)
 					if (data.success == 0) {
-						console.log(window.location)
-						console.log(window.location.origin)
 						window.location = window.location.origin + "/spew"
 					}
 					//display error

@@ -10,4 +10,5 @@ urlpatterns = [
     path('joingroup', views.join_group, name='joingroup'),
     path('creategroupsetup', views.create_group_setup, name='creategroupsetup'),
     path('creategroup', views.create_group, name='creategroup'),
+    path('getjoinedgroupdata', views.get_joined_group_data, name='getjoinedgroupdata'),
 ]
