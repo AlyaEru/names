@@ -117,11 +117,12 @@ def new_word(request):
             dbword = user_to_backend_tags(word)
             w = Word(word=dbword, partOfSpeech=pos, group=group)
             w.save()
+            return JsonResponse({ 'response': word + ' added to database'})
         else:
             return JsonResponse({ 'response': backend_to_user_tags(word) + ' already exists'})
+    else: return JsonResponse({ 'response': ''})
 
-    return JsonResponse({ 'response': word + ' added to database'})
-
+    
 def delete_word(request):
     word = request.GET.get('word', None)
     pos = request.GET.get('pos', None)
@@ -129,9 +130,9 @@ def delete_word(request):
 
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     dbword = user_to_backend_tags(word)
-    Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword, group__exact=group).delete()
-
-    return JsonResponse({ 'response': word + ' deleted from database'})
+    if Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword, group__exact=group).delete()[0] > 0:
+        return JsonResponse({ 'response': word + ' deleted from database'})
+    else: return JsonResponse({ 'response': word + ' not found'})
 
 
 def index(request):
