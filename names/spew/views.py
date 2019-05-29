@@ -127,7 +127,7 @@ def delete_word(request):
     pos = request.GET.get('pos', None)
     groupName = request.session['group']
 
-    group = NameGroup.objects.filter(name_exact=groupName)[:1].get()
+    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
     dbword = user_to_backend_tags(word)
     Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword, group__exact=group).delete()
 
