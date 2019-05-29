@@ -23,7 +23,7 @@ def get_random_item(pos, group):
 
 def a_to_an(sen):
     new = sen
-    for vowel in ['a', 'e', 'i', 'o', 'u']:
+    for vowel in ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']:
         new = re.sub(r' a ' + vowel, ' an ' + vowel, new)
         new = re.sub(r'^a ' + vowel, 'an ' + vowel, new)
     return new
