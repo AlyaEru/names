@@ -30,7 +30,7 @@ $(document).ready(function() {
 		$('form').submit( function(e) {
 			e.preventDefault();
 		});
-		$('#word').val($('#word').val().replace("'","`")); //fixes apostrophe bug
+		$('#word').val($('#word').val().replace("'","&apos;")); //fixes apostrophe bug
 		var wordType = $('input[type=radio]:checked').val();
 		var Word = $('#word').val();
 		var command = $(this).val();
