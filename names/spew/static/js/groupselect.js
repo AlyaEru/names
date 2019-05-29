@@ -84,11 +84,9 @@ $(document).ready(function() {
 				
 				if(data.success == 0) {
 					$('#group-form p').remove()
-					$('#confirmgrouppassword').show()
 					$('#join').hide()
 					$('#create').hide()
-					$('#final-create').show()
-					$('#cancel').show()
+					$('.confirm').show()
 					
 				}
 				else {
@@ -138,11 +136,9 @@ $(document).ready(function() {
 	$('#group-form').on('click', '#cancel', function () {
 		$('#group-form p').remove()
 		$('#group-form input').value = ''
-		$('#confirmgrouppassword').show()
 		$('#join').show()
 		$('#create').show()
-		$('#final-create').hide()
-		$('#cancel').hide()
+		$('.confirm').hide()
 	});
 	
 })
