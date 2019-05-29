@@ -64,20 +64,10 @@ $(document).ready(function() {
 		$('#word').val("");
 	});
 	$('input[value=se]').click( function() {
-		if($('#word').val()=='') {
-			$('#word').val('ex: [NAME] is a [ADJ] [NOUN]');
-		}
-		
-		$('#word').click( function() {
-			if($('#word').val()=='ex: [NAME] is a [ADJ] [NOUN]') {
-				$(this).val('');
-			}
-			});
-		$('input[value=se]').siblings().click( function() {
-			if($('#word').val()=='ex: [NAME] is a [ADJ] [NOUN]') {
-				$('#word').val('');
-			}
-		});
+		$("#word").attr('placeholder', 'ex: [NAME] is a [ADJ] [NOUN]');
+	});
+	$('input[value=se]').siblings().click( function() {
+		$("#word").attr('placeholder', '');
 	});
 	
 });
