@@ -135,7 +135,7 @@ def delete_word(request):
     else:
         suggests = Word.objects.filter(partOfSpeech__exact=pos, word__icontains=dbword, group__exact=group)
         if len(suggests) > 0:
-            return JsonResponse({ 'response': word + ' not found. Did you mean "' + suggests[0].word + '"?'})
+            return JsonResponse({ 'response': word + ' not found. Did you mean "' + backend_to_user_tags(suggests[0].word) + '"?'})
         else: return JsonResponse({ 'response': word + ' not found.'})
 
 def index(request):
