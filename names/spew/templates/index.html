@@ -12,6 +12,7 @@
 	{% load static %}
 	<script type='text/javascript' src="{% static 'js/app.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<link rel="icon" href="{% static 'images/favicon.ico' %}" />
 
 </head>
 <body>
@@ -21,7 +22,6 @@
 	</div>
 	<div id='main'>
 		<button id='spewnames'>Spew names</button>
-		<h1></h1>
 	</div>
 	
 	<button id="sidebar-button" onclick="$('#sidebar').toggleClass('open');$(this).toggleClass('open');"></button>
@@ -36,7 +36,7 @@
 				<input type="radio" name="wordtype" value="se" id='sentence'><label for='sentence'>sentence</label>
 				<input type="radio" name="wordtype" value="suggest" id='suggest'><label for='suggest'>suggestions for Biffy</label>
 			</div>
-			<h2>word/phrase:</h2>
+			<h2>word/sentence:</h2>
 			<input type='text' name='word' id='word' maxlength='100'>
 			<input type='submit' name='cmd' value='add' class='cmd'>
 			<input type='submit' name='cmd' value='delete' class='cmd'>

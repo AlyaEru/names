@@ -1,9 +1,5 @@
 $(document).ready(function() {
-	//var names = ['Biffy','Daniel','Adam','Corrie'];
-	//var advectives = ['fat','googly','freakish','jaundiced'];
-	//var nouns = ['lard','wizard','molecule','turd'];
-	//insert after head a li 
-	var spewNames = false;
+	var spewNames = true;
 	
 	setInterval(function(){
 		if(spewNames)
@@ -12,7 +8,7 @@ $(document).ready(function() {
 				url: '/spew/generate',
 				dataType: 'json',
 				success: function (data) {
-					$('h1').after('<li class="spewing" style="color: rgb('+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +');">'+ data.sentence +'</li>');
+					$('#spewnames').after('<li class="spewing" style="color: rgb('+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +');">'+ data.sentence +'</li>');
 				}
 			});
 			
@@ -47,7 +43,7 @@ $(document).ready(function() {
 				},
 				dataType: 'json',
 				success: function (data) {
-					$('h1').after('<li class="spewing" style="color: white;">'+ data.response +'</li>');
+					$('#spewnames').after('<li class="spewing" style="color: white;">'+ data.response +'</li>');
 				}
 			});
 		}
@@ -60,7 +56,7 @@ $(document).ready(function() {
 				},
 				dataType: 'json',
 				success: function (data) {
-					$('h1').after('<li class="spewing" style="color: white;">'+ data.response +'</li>');
+					$('#spewnames').after('<li class="spewing" style="color: white;">'+ data.response +'</li>');
 				}
 			});
 		}
