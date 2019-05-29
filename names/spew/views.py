@@ -64,12 +64,14 @@ def get_sentence(request):
     else: sentence = "No sentences yet; add one!"
     
 
-    iterations = 7
+    iterations = 6
     while '[' in sentence and iterations > 0:
         tags = re.findall('\[..\]',sentence)
         last = ""
         for tag in tags:
-            if tag == '[re]':
+            if iterations == 1:
+                newItem = 'REDACTED'
+            elif tag == '[re]':
                 newItem = last
             elif tag == '[pn]':
                 newItem = pluralize(get_random_item('no',group))
@@ -81,7 +83,8 @@ def get_sentence(request):
             #   in sentence when they've been filled in newSentence?
 
             last = newItem
-            iterations -= 1
+        iterations -= 1
+                
     sentence = a_to_an(sentence)
     sentence = cap_and_punc(sentence)
     data = { 'sentence': sentence }
