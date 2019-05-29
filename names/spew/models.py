@@ -27,3 +27,11 @@ class NameGroup(models.Model):
     def __str__(self):
         return self.name
 
+class LastSentence(models.Model):
+    sentence = models.TextField()
+    time = models.DateTimeField(auto_now=True)
+    group = models.ForeignKey('NameGroup', on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return self.sentence
+

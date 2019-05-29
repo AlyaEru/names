@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from spew.models import Word, NameGroup
+from spew.models import Word, NameGroup, LastSentence
 import random
 import re
+from datetime import datetime, timezone
 
 tags_list = [
     ('[NAME]','[na]'),
@@ -57,6 +58,12 @@ def cap_and_punc(sentence):
 def get_sentence(request):
     groupName = request.session['group']
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
+
+    lastSentenceList = LastSentence.objects.filter(group__exact=group)
+    if len(lastSentenceList) > 0:
+        secondDif = (datetime.now(timezone.utc) - lastSentenceList[0].time).total_seconds()
+        if float(secondDif) < 1.5:
+            return JsonResponse( {'sentence': lastSentenceList[0].sentence} )
     
     words = Word.objects.filter(partOfSpeech__exact='se', group__exact=group) | Word.objects.filter(partOfSpeech__exact='s?', group__exact=group)
     if len(words) > 0:
@@ -87,6 +94,13 @@ def get_sentence(request):
                 
     sentence = a_to_an(sentence)
     sentence = cap_and_punc(sentence)
+
+    if len(lastSentenceList) > 0:
+        lastSentenceList[0].sentence = sentence
+        lastSentenceList[0].save()
+    else:
+        l = LastSentence(sentence=sentence,group=group)
+        l.save()
     data = { 'sentence': sentence }
     return JsonResponse(data)
 
@@ -113,7 +127,7 @@ def delete_word(request):
     pos = request.GET.get('pos', None)
     groupName = request.session['group']
 
-    group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
+    group = NameGroup.objects.filter(name_exact=groupName)[:1].get()
     dbword = user_to_backend_tags(word)
     Word.objects.filter(partOfSpeech__exact=pos, word__exact=dbword, group__exact=group).delete()
 
