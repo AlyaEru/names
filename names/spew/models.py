@@ -11,6 +11,7 @@ class Word(models.Model):
         ('av','Adverb'),
         ('s?','Interrogative'),
         ('pn','Plural Noun'),
+        ('su','Suggestion'),
     )
     partOfSpeech = models.CharField(
         max_length=2,
