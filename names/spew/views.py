@@ -53,7 +53,8 @@ def backend_to_user_tags(w):
     return new
 
 def cap_and_punc(sentence):
-    return sentence[0].upper() + sentence[1:] + ('.' if sentence[-1] != '?' and sentence[-1] != '!' and sentence[-1] != '.' else '')
+    sentence = sentence[0].upper() + sentence[1:] + ('.' if sentence[-1] != '?' and sentence[-1] != '!' and sentence[-1] != '.' else '')
+    return sentence.replace(',,',',')
 
 def get_sentence(request):
     groupName = request.session['group']
