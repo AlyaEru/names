@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$.ajax({
-		url: '/spew/getjoinedgroupdata',
+		url: '/getjoinedgroupdata',
 		dataType: 'json',
 		success: function (data) {
 			data['data'].forEach(function(item, index) { 
@@ -19,7 +19,7 @@ $(document).ready(function() {
 						pwd = item['password']
 				});
 				$.ajax({
-					url: '/spew/joingroup',
+					url: '/joingroup',
 					dataType: 'json',
 					data: {
 						'name': name,
@@ -28,7 +28,7 @@ $(document).ready(function() {
 					success: function (data) {
 						console.log(data)
 						if (data.success == 0) {
-							window.location = window.location.origin + "/spew"
+							window.location = window.location.origin
 						}
 					}
 				});
@@ -45,7 +45,7 @@ $(document).ready(function() {
 		var pwd = $('#grouppassword').val();
 		
 		$.ajax({
-			url: '/spew/joingroup',
+			url: '/joingroup',
 			data: {
 				'name': name,
 				'pwd': pwd
@@ -53,7 +53,7 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function (data) {
 				if (data.success == 0) {
-					window.location = window.location.origin + "/spew"
+					window.location = window.location.origin
 				}
 				else {
 					//display error
@@ -74,7 +74,7 @@ $(document).ready(function() {
 		var pwd = $('#grouppassword').val();
 		
 		$.ajax({
-			url: '/spew/creategroupsetup',
+			url: '/creategroupsetup',
 			data: {
 				'name': name,
 				'pwd': pwd
@@ -107,7 +107,7 @@ $(document).ready(function() {
 		if(pwd == confirmpwd)
 		{
 			$.ajax({
-				url: '/spew/creategroup',
+				url: '/creategroup',
 				data: {
 					'name': name,
 					'pwd': pwd
@@ -115,7 +115,7 @@ $(document).ready(function() {
 				dataType: 'json',
 				success: function (data) {
 					if (data.success == 0) {
-						window.location = window.location.origin + "/spew"
+						window.location = window.location.origin
 					}
 					//display error
 					$('#group-form p').remove()

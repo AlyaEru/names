@@ -5,7 +5,7 @@ $(document).ready(function() {
 		if(spewNames)
 		{
 			$.ajax({
-				url: '/spew/generate',
+				url: '/generate',
 				dataType: 'json',
 				success: function (data) {
 					$('#spewnames').after('<li class="spewing" style="color: rgb('+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +','+ (Math.floor(Math.random() * 200 + 56)).toString() +');">'+ data.sentence +'</li>');
@@ -36,7 +36,7 @@ $(document).ready(function() {
 		var command = $(this).val();
 		if(command == 'add') {
 			$.ajax({
-				url: '/spew/newword',
+				url: '/newword',
 				data: {
 				  'word': Word,
 				  'pos': wordType
@@ -49,7 +49,7 @@ $(document).ready(function() {
 		}
 		if(command == 'delete') {
 			$.ajax({
-				url: '/spew/deleteword',
+				url: '/deleteword',
 				data: {
 				  'word': Word,
 				  'pos': wordType

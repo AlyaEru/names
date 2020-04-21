@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('spew.urls')),
-    path('spew/', RedirectView.as_view(url='', permanent=True)),
+    path('spew/', RedirectView.as_view(url='/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
