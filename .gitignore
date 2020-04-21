@@ -84,6 +84,9 @@ target/
 *.pyc
 __pycache__/
 local_settings.py
+names/spew/migrations/
 
 .env
 db.sqlite3
+
+namespem.pem
