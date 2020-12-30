@@ -110,9 +110,9 @@ def new_word(request):
     pos = request.GET.get('pos', None)
     groupName = request.session['group']
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
-    
+
     if word and pos:
-        if Word.objects.filter(partOfSpeech__exact=pos, word__exact=word, group__name__exact=groupName).count() == 0:
+        if Word.objects.filter(partOfSpeech__exact=pos, word__exact=user_to_backend_tags(word), group__name__exact=groupName).count() == 0:
             if word[-1] == '?' and pos == 'se':
                 pos = 's?'
             dbword = user_to_backend_tags(word)
@@ -120,7 +120,7 @@ def new_word(request):
             w.save()
             return JsonResponse({ 'response': word + ' added to database'})
         else:
-            return JsonResponse({ 'response': backend_to_user_tags(word) + ' already exists'})
+            return JsonResponse({ 'response': word + ' already exists'})
     else: return JsonResponse({ 'response': ''})
 
     
