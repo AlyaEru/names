@@ -57,6 +57,12 @@ def cap_and_punc(sentence):
     return sentence.replace(',,',',')
 
 def get_sentence(request):
+    groupName = ''
+    if 'group' not in request.session:
+        joinGroupResponse = join_group(request)
+        if 'group' not in request.session:
+            return joinGroupResponse
+
     groupName = request.session['group']
     group = NameGroup.objects.filter(name__exact=groupName)[:1].get()
 
